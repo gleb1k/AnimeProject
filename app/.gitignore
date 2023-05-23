@@ -23,5 +23,3 @@ build/**
 *.iws
 classes/**
 target/**
-Footer
-/build
