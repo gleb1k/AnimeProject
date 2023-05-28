@@ -5,19 +5,17 @@ import com.google.gson.annotations.SerializedName
 
 data class AnimeData(
     @SerializedName("mal_id")
-    val malId: Int?,
+    val malId: Int,
     @SerializedName("url")
-    val url: String?,
+    val url: String,
     @SerializedName("images")
-    val images: Images?,
+    val images: Images,
     @SerializedName("trailer")
     val trailer: Trailer?,
     @SerializedName("approved")
     val approved: Boolean?,
-    @SerializedName("titles")
-    val titles: List<Title?>?,
     @SerializedName("title")
-    val title: String?,
+    val title: String,
     @SerializedName("title_english")
     val titleEnglish: String?,
     @SerializedName("title_japanese")
@@ -27,21 +25,21 @@ data class AnimeData(
     @SerializedName("type")
     val type: String?,
     @SerializedName("source")
-    val source: String?,
+    val source: String,
     @SerializedName("episodes")
-    val episodes: Int?,
+    val episodes: Int,
     @SerializedName("status")
-    val status: String?,
+    val status: String,
     @SerializedName("airing")
     val airing: Boolean?,
     @SerializedName("aired")
-    val aired: Aired?,
+    val aired: Aired,
     @SerializedName("duration")
-    val duration: String?,
+    val duration: String,
     @SerializedName("rating")
-    val rating: String?,
+    val rating: String,
     @SerializedName("score")
-    val score: Int?,
+    val score: Double,
     @SerializedName("scored_by")
     val scoredBy: Int?,
     @SerializedName("rank")
@@ -53,13 +51,13 @@ data class AnimeData(
     @SerializedName("favorites")
     val favorites: Int?,
     @SerializedName("synopsis")
-    val synopsis: String?,
+    val synopsis: String,
     @SerializedName("background")
     val background: String?,
     @SerializedName("season")
     val season: String?,
     @SerializedName("year")
-    val year: Int?,
+    val year: Int,
     @SerializedName("broadcast")
     val broadcast: Broadcast?,
     @SerializedName("producers")

@@ -9,5 +9,7 @@ data class Aired(
     @SerializedName("to")
     val to: String?,
     @SerializedName("prop")
-    val prop: Prop?
+    val prop: Prop?,
+    @SerializedName("string")
+    val string: String?
 )

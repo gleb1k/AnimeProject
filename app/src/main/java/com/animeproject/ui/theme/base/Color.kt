@@ -1,4 +1,4 @@
-package com.animeproject.ui.theme
+package com.animeproject.ui.theme.base
 
 import androidx.compose.ui.graphics.Color
 

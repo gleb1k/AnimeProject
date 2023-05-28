@@ -1,4 +1,4 @@
-package com.animeproject.ui.theme
+package com.animeproject.ui.theme.base
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

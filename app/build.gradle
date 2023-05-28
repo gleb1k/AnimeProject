@@ -30,17 +30,17 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_8
-        targetCompatibility JavaVersion.VERSION_1_8
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
     kotlinOptions {
-        jvmTarget = '1.8'
+        jvmTarget = '17'
     }
     buildFeatures {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion '1.4.2'
+        kotlinCompilerExtensionVersion '1.4.7'
     }
     packagingOptions {
         resources {
@@ -49,18 +49,7 @@ android {
     }
 }
 
-//todo почему-то когда создал проект у меня не создался gradle.kts :с
 dependencies {
-
-    // todo без этого не билдится, падает какая-то ошибка, связанная с версией градла. хз
-    constraints {
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk7:1.8.0") {
-            because("kotlin-stdlib-jdk7 is now a part of kotlin-stdlib")
-        }
-        implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.8.0") {
-            because("kotlin-stdlib-jdk8 is now a part of kotlin-stdlib")
-        }
-    }
 
     implementation 'androidx.core:core-ktx:1.10.1'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.6.1'
@@ -72,12 +61,20 @@ dependencies {
     implementation 'androidx.compose.ui:ui-graphics'
     implementation 'androidx.compose.ui:ui-tooling-preview'
     implementation 'androidx.compose.material3:material3'
+
+    implementation "androidx.lifecycle:lifecycle-runtime-compose:2.6.1"
+    implementation("androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1")
+    implementation "androidx.navigation:navigation-compose:2.5.3"
+    implementation("androidx.compose.material:material:1.4.3")
+
+    implementation "org.jetbrains.kotlinx:kotlinx-collections-immutable:0.3.5"
+
     // endregion
 
     // region Dagger Hilt'
-    def hilt = '2.44'
-    implementation "com.google.dagger:hilt-android:$hilt"
-    kapt "com.google.dagger:hilt-compiler:$hilt"
+    implementation 'com.google.dagger:hilt-android:2.46.1'
+    kapt 'com.google.dagger:hilt-compiler:2.46.1'
+    implementation 'androidx.hilt:hilt-navigation-compose:1.0.0'
     // endregion
 
     // region Room
@@ -96,8 +93,8 @@ dependencies {
     implementation "com.squareup.okhttp3:okhttp:$okhttp"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhttp"
 
-    implementation "com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:0.8.0"
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0'
+    implementation 'org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.1'
     // endregion
 
     // region Utils
@@ -105,8 +102,9 @@ dependencies {
     //cicerone
     implementation "com.github.terrakok:cicerone:7.1"
     //glide
-    implementation 'com.github.bumptech.glide:glide:4.15.0'
-    kapt 'com.github.bumptech.glide:compiler:4.15.0'
+    implementation 'com.github.bumptech.glide:glide:4.15.1'
+    kapt 'com.github.bumptech.glide:compiler:4.15.1'
+    implementation "com.github.bumptech.glide:compose:1.0.0-alpha.1"
     // endregion
 
 

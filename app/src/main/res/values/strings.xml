@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">AnimeProject</string>
+
+    <string name="settings">Settings</string>
+    <string name="anime">Anime</string>
+    <string name="character">Character</string>
+    <string name="search">Search</string>
+    <string name="base">Base</string>
+
 </resources>

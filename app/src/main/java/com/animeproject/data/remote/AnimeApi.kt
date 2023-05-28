@@ -1,8 +1,10 @@
 package com.animeproject.data.remote
 
 import com.animeproject.data.remote.response.anime.AnimeData
+import com.animeproject.data.remote.response.anime.AnimeResponse
 import com.animeproject.data.remote.response.anime.AnimesResponse
 import com.animeproject.data.remote.response.character.CharacterData
+import com.animeproject.data.remote.response.character.CharacterResponse
 import com.animeproject.data.remote.response.character.CharactersResponse
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -19,7 +21,7 @@ interface AnimeApi {
     @GET("anime/{id}")
     suspend fun getAnimeById(
         @Path("id") id: Int
-    ) : AnimeData
+    ): AnimeResponse
 
     @GET("characters")
     suspend fun searchCharacters(
@@ -29,6 +31,6 @@ interface AnimeApi {
     @GET("characters/{id}")
     suspend fun getCharacterById(
         @Path("id") id: Int
-    ) : CharacterData
+    ): CharacterResponse
 
 }

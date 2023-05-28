@@ -8,6 +8,4 @@ data class Prop(
     val from: From?,
     @SerializedName("to")
     val to: To?,
-    @SerializedName("string")
-    val string: String?
 )

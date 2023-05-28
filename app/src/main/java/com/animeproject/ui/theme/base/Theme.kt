@@ -1,4 +1,4 @@
-package com.animeproject.ui.theme
+package com.animeproject.ui.theme.base
 
 import android.app.Activity
 import android.os.Build

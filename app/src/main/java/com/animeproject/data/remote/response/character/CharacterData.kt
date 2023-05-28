@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 
 data class CharacterData(
     @SerializedName("mal_id")
-    val malId: Int?,
+    val malId: Int,
     @SerializedName("url")
-    val url: String?,
+    val url: String,
     @SerializedName("images")
-    val images: Images?,
+    val images: Images,
     @SerializedName("name")
-    val name: String?,
+    val name: String,
     @SerializedName("name_kanji")
     val nameKanji: String?,
     @SerializedName("nicknames")
-    val nicknames: List<String?>?,
+    val nicknames: List<String?>,
     @SerializedName("favorites")
     val favorites: Int?,
     @SerializedName("about")
-    val about: String?
+    val about: String
 )
