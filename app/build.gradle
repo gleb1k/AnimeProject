@@ -119,3 +119,9 @@ dependencies {
     // endregion
 
 }
+
+detekt {
+    source = files(projectDir)
+    config = files("${project.rootDir}/config/detekt/detekt.yml")
+    parallel = true
+}

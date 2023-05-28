@@ -192,15 +192,18 @@ fun SettingsScreen(
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
-                        ColorCard(color = if (currentSettings.isDarkMode) purpleDarkPalette.tintColor else purpleLightPalette.tintColor,
+                        ColorCard(color = if (currentSettings.isDarkMode)
+                            purpleDarkPalette.tintColor else purpleLightPalette.tintColor,
                             onClick = {
                                 settingsEventBus.updateStyle(CustomStyle.Purple)
                             })
-                        ColorCard(color = if (currentSettings.isDarkMode) orangeDarkPalette.tintColor else orangeLightPalette.tintColor,
+                        ColorCard(color = if (currentSettings.isDarkMode)
+                            orangeDarkPalette.tintColor else orangeLightPalette.tintColor,
                             onClick = {
                                 settingsEventBus.updateStyle(CustomStyle.Orange)
                             })
-                        ColorCard(color = if (currentSettings.isDarkMode) blueDarkPalette.tintColor else blueLightPalette.tintColor,
+                        ColorCard(color = if (currentSettings.isDarkMode)
+                            blueDarkPalette.tintColor else blueLightPalette.tintColor,
                             onClick = {
                                 settingsEventBus.updateStyle(CustomStyle.Blue)
                             })
