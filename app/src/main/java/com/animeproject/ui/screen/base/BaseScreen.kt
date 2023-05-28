@@ -20,6 +20,10 @@ fun BaseScreen(
             .fillMaxSize()
             .background(CustomTheme.colors.primaryBackground),
     ) {
-        Text(stringResource(R.string.base))
+        Text(
+            stringResource(R.string.base),
+            color = CustomTheme.colors.tintColor,
+            style = CustomTheme.typography.heading
+        )
     }
 }

@@ -20,15 +20,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import com.animeproject.ui.screen.anime.AnimeScreen
-import com.animeproject.ui.screen.character.CharacterScreen
 import com.animeproject.ui.screen.base.BaseScreen
+import com.animeproject.ui.screen.character.CharacterScreen
 import com.animeproject.ui.screen.search.SearchScreen
 import com.animeproject.ui.screen.settings.SettingsScreen
+import com.animeproject.ui.theme.custom.CustomTheme
 
 
 @Composable
 fun CustomNavHost(
-    modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     startDestination: Screen = Screen.Search
 ) {
@@ -40,14 +40,19 @@ fun CustomNavHost(
     Scaffold(
         bottomBar = {
             BottomNavigation(
-//                backgroundColor = ItisTheme.colors.tintColor
+                backgroundColor = CustomTheme.colors.tintColor
             ) {
                 val navBackStackEntry by navController.currentBackStackEntryAsState()
                 val currentDestination = navBackStackEntry?.destination
                 bottomScreens.forEach { screen ->
                     BottomNavigationItem(
                         icon = { Icon(screen.icon!!, contentDescription = null) },
-                        label = { Text(stringResource(screen.name!!)) },
+                        label = {
+                            Text(
+                                stringResource(screen.name!!),
+                                style = CustomTheme.typography.caption
+                            )
+                        },
                         selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
                         onClick = {
                             navController.navigate(screen.route) {
@@ -84,8 +89,10 @@ fun CustomNavHost(
             ) {
                 AnimeScreen(it.arguments?.getInt("animeId"))
             }
-            composable(Screen.Character.route,
-                arguments = listOf(navArgument("characterId") { type = NavType.IntType })) {
+            composable(
+                Screen.Character.route,
+                arguments = listOf(navArgument("characterId") { type = NavType.IntType })
+            ) {
                 CharacterScreen(it.arguments?.getInt("characterId"))
             }
 

@@ -15,7 +15,6 @@ import androidx.compose.material.Checkbox
 import androidx.compose.material.CheckboxDefaults
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.TopAppBar
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -23,12 +22,11 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.animeproject.R
-import com.animeproject.ui.theme.custom.CustomCorners
 import com.animeproject.ui.theme.custom.CustomStyle
 import com.animeproject.ui.theme.custom.CustomTheme
+import com.animeproject.ui.theme.custom.FontFamilies
 import com.animeproject.ui.theme.custom.blueDarkPalette
 import com.animeproject.ui.theme.custom.blueLightPalette
 import com.animeproject.ui.theme.custom.orangeDarkPalette
@@ -45,22 +43,8 @@ fun SettingsScreen(
 
     Surface(color = CustomTheme.colors.primaryBackground) {
         Column(modifier = Modifier.fillMaxSize()) {
-            TopAppBar(
-                backgroundColor = CustomTheme.colors.primaryBackground,
-                elevation = 8.dp
-            ) {
-                Text(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(start = CustomTheme.shapes.padding),
-                    text = stringResource(id = R.string.settings),
-                    color = CustomTheme.colors.primaryText,
-                    style = CustomTheme.typography.toolbar
-                )
-            }
-
             Row(
-                modifier = androidx.compose.ui.Modifier.padding(CustomTheme.shapes.padding),
+                modifier = Modifier.padding(CustomTheme.shapes.padding),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
@@ -70,7 +54,8 @@ fun SettingsScreen(
                     style = CustomTheme.typography.body
                 )
                 Checkbox(
-                    checked = currentSettings.isDarkMode, onCheckedChange = {
+                    checked = currentSettings.isDarkMode,
+                    onCheckedChange = {
                         settingsEventBus.updateDarkMode(!currentSettings.isDarkMode)
                     },
                     colors = CheckboxDefaults.colors(
@@ -103,7 +88,11 @@ fun SettingsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Shape type", color = CustomTheme.colors.secondaryText)
+                    Text(
+                        text = "Text style",
+                        color = CustomTheme.colors.secondaryText,
+                        style = CustomTheme.typography.body,
+                    )
                     Spacer(modifier = Modifier.height(8.dp))
                     Row(
                         modifier = Modifier.fillMaxWidth(),
@@ -119,13 +108,14 @@ fun SettingsScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 8.dp),
-                                    text = "Round",
+                                    text = "Normal",
                                     color = CustomTheme.colors.primaryText,
                                     style = CustomTheme.typography.body
                                 )
                                 Checkbox(
-                                    checked = currentSettings.cornerStyle == CustomCorners.Rounded, onCheckedChange = {
-                                        settingsEventBus.updateCornerStyle(CustomCorners.Rounded)
+                                    checked = currentSettings.fontFamily == FontFamilies.Normal,
+                                    onCheckedChange = {
+                                        settingsEventBus.updateFontFamily(FontFamilies.Normal)
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = CustomTheme.colors.tintColor,
@@ -146,13 +136,15 @@ fun SettingsScreen(
                                     modifier = Modifier
                                         .weight(1f)
                                         .padding(horizontal = 8.dp),
-                                    text = "Flat",
+                                    text = "Cursive",
                                     color = CustomTheme.colors.primaryText,
-                                    style = CustomTheme.typography.body
-                                )
+                                    style = CustomTheme.typography.body,
+
+                                    )
                                 Checkbox(
-                                    checked = currentSettings.cornerStyle == CustomCorners.Flat, onCheckedChange = {
-                                        settingsEventBus.updateCornerStyle(CustomCorners.Flat)
+                                    checked = currentSettings.fontFamily == FontFamilies.Cursive,
+                                    onCheckedChange = {
+                                        settingsEventBus.updateFontFamily(FontFamilies.Cursive)
                                     },
                                     colors = CheckboxDefaults.colors(
                                         checkedColor = CustomTheme.colors.tintColor,
@@ -188,10 +180,14 @@ fun SettingsScreen(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = "Tint color", color = CustomTheme.colors.secondaryText)
+                    Text(
+                        text = "Tint color",
+                        color = CustomTheme.colors.secondaryText,
+                        style = CustomTheme.typography.body,
+                    )
 
                     Row(
-                        modifier = androidx.compose.ui.Modifier
+                        modifier = Modifier
                             .padding(CustomTheme.shapes.padding)
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceEvenly
@@ -226,4 +222,10 @@ private fun ColorCard(color: Color, onClick: Click) {
         shape = CustomTheme.shapes.cornersStyle,
         elevation = 3.dp,
     ) {}
+}
+
+@Preview
+@Composable
+fun SettingsPreview() {
+    SettingsScreen()
 }

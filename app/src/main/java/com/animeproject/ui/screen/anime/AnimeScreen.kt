@@ -8,17 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -68,34 +68,39 @@ fun Content(
                         model = viewState.anime.images.jpg?.largeImageUrl
                             ?: viewState.anime.images.webp?.largeImageUrl,
                         contentDescription = "Image",
+                        contentScale = ContentScale.None,
                         modifier = Modifier
                             .padding(top = 16.dp)
-                            .fillMaxWidth()
-                            .height(300.dp)
+//                            .fillMaxWidth()
+                            .height(320.dp)
+                            .width(180.dp)
                     )
-
                     Card(
                         elevation = CardDefaults.cardElevation(4.dp),
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp),
-                    ) {
+
+                        ) {
                         Column(
                             horizontalAlignment = Alignment.CenterHorizontally,
                             modifier = Modifier
                                 .fillMaxSize()
-                                .padding(vertical = 8.dp)
                                 .background(CustomTheme.colors.secondaryBackground)
+                                .padding(vertical = 8.dp)
+
                         ) {
                             Text(
                                 text = viewState.anime.titleEnglish ?: "",
-                                fontWeight = FontWeight.Bold,
+                                color = CustomTheme.colors.primaryText,
+                                style = CustomTheme.typography.body,
                                 modifier = Modifier
                                     .padding(horizontal = 8.dp)
                             )
                             Text(
                                 text = viewState.anime.title,
-                                fontWeight = FontWeight.Light,
+                                color = CustomTheme.colors.primaryText,
+                                style = CustomTheme.typography.body,
                                 modifier = Modifier
                                     .padding(horizontal = 8.dp)
                                     .padding(bottom = 8.dp)
@@ -107,17 +112,22 @@ fun Content(
                             ) {
                                 Text(
                                     text = "${viewState.anime.year} y.",
+                                    color = CustomTheme.colors.primaryText,
+                                    style = CustomTheme.typography.body,
                                     modifier = Modifier
                                         .padding(horizontal = 8.dp),
                                 )
                                 Text(
-                                    text = viewState.anime.type?:"",
+                                    text = viewState.anime.type ?: "",
+                                    color = CustomTheme.colors.primaryText,
+                                    style = CustomTheme.typography.body,
                                     modifier = Modifier
                                         .padding(horizontal = 8.dp),
                                 )
                                 Text(
-
                                     text = viewState.anime.score.toString(),
+                                    color = CustomTheme.colors.primaryText,
+                                    style = CustomTheme.typography.body,
                                     modifier = Modifier
                                         .padding(horizontal = 8.dp),
                                 )
@@ -155,10 +165,13 @@ fun Content(
                         horizontalAlignment = Alignment.CenterHorizontally,
                         modifier = Modifier
                             .fillMaxSize()
+                            .background(CustomTheme.colors.secondaryBackground)
                             .padding(vertical = 8.dp)
                     ) {
                         Text(
                             text = viewState.anime.synopsis,
+                            color = CustomTheme.colors.primaryText,
+                            style = CustomTheme.typography.body,
                             modifier = Modifier
                                 .padding(horizontal = 8.dp)
                         )
@@ -202,6 +215,7 @@ private fun InfoDivider() {
     Divider(
         modifier = Modifier.padding(1.dp),
         thickness = 0.5.dp,
+        color = CustomTheme.colors.tintColor
     )
 }
 

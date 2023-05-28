@@ -3,8 +3,8 @@
 package com.animeproject.ui.screen.search
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -12,12 +12,13 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
@@ -26,21 +27,16 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import com.animeproject.data.remote.response.anime.AnimeData
 import com.animeproject.data.remote.response.character.CharacterData
-import com.animeproject.data.remote.response.character.Images
-import com.animeproject.data.remote.response.character.Jpg
-import com.animeproject.ui.theme.base.AnimeProjectTheme
 import com.animeproject.ui.theme.custom.CustomTheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -87,6 +83,7 @@ fun Content(
     eventHandler: (SearchEvent) -> Unit
 ) {
     LazyColumn(
+        verticalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier
             .fillMaxSize()
             .background(CustomTheme.colors.primaryBackground),
@@ -118,9 +115,10 @@ fun Content(
                     unfocusedContainerColor = CustomTheme.colors.secondaryBackground,
                     disabledContainerColor = CustomTheme.colors.secondaryBackground,
                     focusedIndicatorColor = CustomTheme.colors.tintColor,
+                    unfocusedLabelColor = CustomTheme.colors.controlColor
                 ),
                 label = {
-                    Text("Anime title or character name")
+                    Text("Anime title or character name", style = CustomTheme.typography.caption)
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -162,7 +160,6 @@ private fun TextCenter(
                 text = text,
                 color = CustomTheme.colors.primaryText,
                 style = CustomTheme.typography.heading,
-                fontWeight = FontWeight.Bold
             )
         }
     }
@@ -176,19 +173,23 @@ private fun AnimeItem(
 ) {
     Row(
         modifier = Modifier
-            .height(130.dp)
             .fillMaxWidth()
             .clickable {
                 onClick.invoke(anime.malId)
             }
-            .padding(horizontal = 8.dp),
+            .padding(horizontal = 8.dp)
+            .background(CustomTheme.colors.secondaryBackground),
+
         verticalAlignment = Alignment.CenterVertically
     ) {
         GlideImage(
             model = anime.images.jpg?.imageUrl ?: anime.images.webp?.imageUrl,
             contentDescription = anime.title,
+            contentScale = ContentScale.None,
             modifier = Modifier
-                .border(1.dp, Color.DarkGray)
+                .height(150.dp)
+                .width(100.dp)
+
         )
         Column(
             modifier = Modifier
@@ -196,12 +197,26 @@ private fun AnimeItem(
         ) {
             Text(
                 text = anime.title,
-                fontWeight = FontWeight.Bold
+                color = CustomTheme.colors.primaryText,
+                style = CustomTheme.typography.heading
             )
             if (anime.score != 0.0)
-                Text(text = "Score: ${anime.score}")
+                Text(
+                    text = "Score: ${anime.score}", color = CustomTheme.colors.primaryText,
+                    style = CustomTheme.typography.body
+                )
         }
     }
+    ItemDivider()
+}
+
+@Composable
+private fun ItemDivider() {
+    Divider(
+        modifier = Modifier.padding(1.dp),
+        thickness = 0.5.dp,
+        color = CustomTheme.colors.tintColor
+    )
 }
 
 @Composable
@@ -211,7 +226,6 @@ private fun CharacterItem(
 ) {
     Row(
         modifier = Modifier
-            .height(150.dp)
             .fillMaxWidth()
             .clickable {
                 onClick.invoke(character.malId)
@@ -222,61 +236,72 @@ private fun CharacterItem(
         GlideImage(
             model = character.images.jpg?.imageUrl ?: character.images.webp?.imageUrl,
             contentDescription = character.name,
+            contentScale = ContentScale.None,
             modifier = Modifier
-                .border(1.dp, Color.DarkGray)
+                .height(150.dp)
+                .width(100.dp)
         )
         Column(
             modifier = Modifier
                 .padding(start = 8.dp)
         ) {
-            Text(text = character.name)
-            Text(text = character.nameKanji ?: "")
+            Text(
+                text = character.name,
+                color = CustomTheme.colors.primaryText,
+                style = CustomTheme.typography.heading
+            )
+            Text(
+                text = character.nameKanji ?: "",
+                color = CustomTheme.colors.primaryText,
+                style = CustomTheme.typography.body
+            )
         }
     }
+    ItemDivider()
 }
 
-@Preview(showBackground = true)
-@Composable
-private fun ScreenPreview() {
-    AnimeProjectTheme {
-        Content(viewState = SearchViewState(
-            query = "test",
-            characters = listOf(
-                CharacterData(
-                    malId = 1,
-                    about = "",
-                    favorites = 1,
-                    images = Images(
-                        jpg = Jpg(
-                            imageUrl = "https://cdn.myanimelist.net/images/characters/2/46905.jpg",
-                            smallImageUrl = null
-                        ),
-                        webp = null
-                    ),
-                    name = "test",
-                    nameKanji = "",
-                    url = "",
-                    nicknames = listOf()
-                ),
-                CharacterData(
-                    malId = 1,
-                    about = "",
-                    favorites = 1,
-                    images = Images(
-                        jpg = Jpg(
-                            imageUrl = "https://cdn.myanimelist.net/images/characters/11/294388.jpg",
-                            smallImageUrl = null
-                        ),
-                        webp = null
-                    ),
-                    name = "test",
-                    nameKanji = "",
-                    url = "",
-                    nicknames = listOf()
-                )
-            ),
-            animes = listOf()
-        ), eventHandler = {})
-    }
-}
+//@Preview(showBackground = true)
+//@Composable
+//private fun ScreenPreview() {
+//    AnimeProjectTheme {
+//        Content(viewState = SearchViewState(
+//            query = "test",
+//            characters = listOf(
+//                CharacterData(
+//                    malId = 1,
+//                    about = "",
+//                    favorites = 1,
+//                    images = Images(
+//                        jpg = Jpg(
+//                            imageUrl = "https://cdn.myanimelist.net/images/characters/2/46905.jpg",
+//                            smallImageUrl = null
+//                        ),
+//                        webp = null
+//                    ),
+//                    name = "test",
+//                    nameKanji = "",
+//                    url = "",
+//                    nicknames = listOf()
+//                ),
+//                CharacterData(
+//                    malId = 1,
+//                    about = "",
+//                    favorites = 1,
+//                    images = Images(
+//                        jpg = Jpg(
+//                            imageUrl = "https://cdn.myanimelist.net/images/characters/11/294388.jpg",
+//                            smallImageUrl = null
+//                        ),
+//                        webp = null
+//                    ),
+//                    name = "test",
+//                    nameKanji = "",
+//                    url = "",
+//                    nicknames = listOf()
+//                )
+//            ),
+//            animes = listOf()
+//        ), eventHandler = {})
+//    }
+//}
 

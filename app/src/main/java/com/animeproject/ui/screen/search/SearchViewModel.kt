@@ -2,13 +2,14 @@ package com.animeproject.ui.screen.search
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import com.animeproject.data.remote.response.anime.AnimeData
 import com.animeproject.data.remote.response.character.CharacterData
 import com.animeproject.domain.repository.AnimeRepository
 import com.animeproject.domain.repository.CharacterRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.collections.immutable.PersistentList
+import kotlinx.collections.immutable.persistentListOf
+import kotlinx.collections.immutable.toPersistentList
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharedFlow
@@ -22,8 +23,8 @@ import javax.inject.Inject
 @Immutable
 data class SearchViewState(
     val query: String = "",
-    val characters: List<CharacterData> = listOf(),
-    val animes: List<AnimeData> = listOf()
+    val characters: PersistentList<CharacterData> = persistentListOf(),
+    val animes: PersistentList<AnimeData> = persistentListOf()
 )
 
 sealed interface SearchEvent {
@@ -74,13 +75,13 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun onAnimeClick(event : SearchEvent.onAnimeClick) {
+    private fun onAnimeClick(event: SearchEvent.onAnimeClick) {
         viewModelScope.launch {
             _action.emit(SearchAction.NavigateToAnime(event.id))
         }
     }
 
-    private fun onCharacterClick(event : SearchEvent.onCharacterClick) {
+    private fun onCharacterClick(event: SearchEvent.onCharacterClick) {
         viewModelScope.launch {
             _action.emit(SearchAction.NavigateToCharacter(event.id))
         }
@@ -90,8 +91,9 @@ class SearchViewModel @Inject constructor(
         viewModelScope.launch {
             _state.emit(
                 _state.value.copy(
-                    animes = animeRepository.searchAnimes(event.query),
+                    animes = animeRepository.searchAnimes(event.query).toPersistentList(),
                     characters = characterRepository.searchCharacters(event.query)
+                        .toPersistentList(),
                 )
             )
         }

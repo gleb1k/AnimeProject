@@ -5,6 +5,7 @@ import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.GenericFontFamily
 import androidx.compose.ui.unit.Dp
 
 data class CustomColors(
@@ -29,11 +30,6 @@ data class CustomShape(
     val cornersStyle: Shape
 )
 
-data class CustomImages(
-    val id: Int,
-    val contentDesc: String
-)
-
 object CustomTheme {
     val colors: CustomColors
         @Composable
@@ -46,6 +42,7 @@ object CustomTheme {
     val shapes: CustomShape
         @Composable
         get() = LocalCustomShape.current
+
 }
 
 enum class CustomStyle {
@@ -58,6 +55,10 @@ enum class CustomSize {
 
 enum class CustomCorners {
     Flat, Rounded
+}
+
+enum class FontFamilies {
+    Normal, Cursive
 }
 
 val LocalCustomColors = staticCompositionLocalOf<CustomColors> {

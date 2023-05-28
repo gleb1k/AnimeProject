@@ -19,5 +19,5 @@ data class CharacterData(
     @SerializedName("favorites")
     val favorites: Int?,
     @SerializedName("about")
-    val about: String
+    val about: String?
 )

@@ -22,6 +22,7 @@ fun CustomTheme(
     paddingSize: CustomSize = CustomSize.Medium,
     corners: CustomCorners = CustomCorners.Rounded,
     darkTheme: Boolean = isSystemInDarkTheme(),
+    fontFamilies: FontFamilies = FontFamilies.Normal,
     content: @Composable () -> Unit
 ) {
     val colors = when {
@@ -48,14 +49,22 @@ fun CustomTheme(
 
     val typography = CustomTypography(
         heading = TextStyle(
+            fontFamily = when (fontFamilies) {
+                FontFamilies.Normal -> FontFamily.SansSerif
+                FontFamilies.Cursive -> FontFamily.Cursive
+            },
             fontSize = when (textSize) {
-                CustomSize.Small -> 24.sp
-                CustomSize.Medium -> 28.sp
-                CustomSize.Big -> 32.sp
+                CustomSize.Small -> 16.sp
+                CustomSize.Medium -> 18.sp
+                CustomSize.Big -> 20.sp
             },
             fontWeight = FontWeight.Bold
         ),
         body = TextStyle(
+            fontFamily = when (fontFamilies) {
+                FontFamilies.Normal -> FontFamily.SansSerif
+                FontFamilies.Cursive -> FontFamily.Cursive
+            },
             fontSize = when (textSize) {
                 CustomSize.Small -> 14.sp
                 CustomSize.Medium -> 16.sp
@@ -64,7 +73,10 @@ fun CustomTheme(
             fontWeight = FontWeight.Normal
         ),
         toolbar = TextStyle(
-            fontFamily = FontFamily.Cursive,
+            fontFamily = when (fontFamilies) {
+                FontFamilies.Normal -> FontFamily.SansSerif
+                FontFamilies.Cursive -> FontFamily.Cursive
+            },
             fontSize = when (textSize) {
                 CustomSize.Small -> 14.sp
                 CustomSize.Medium -> 16.sp
@@ -73,6 +85,10 @@ fun CustomTheme(
             fontWeight = FontWeight.Medium
         ),
         caption = TextStyle(
+            fontFamily = when (fontFamilies) {
+                FontFamilies.Normal -> FontFamily.SansSerif
+                FontFamilies.Cursive -> FontFamily.Cursive
+            },
             fontSize = when (textSize) {
                 CustomSize.Small -> 10.sp
                 CustomSize.Medium -> 12.sp
@@ -80,6 +96,7 @@ fun CustomTheme(
             }
         )
     )
+
 
     val shapes = CustomShape(
         padding = when (paddingSize) {
