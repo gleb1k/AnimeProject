@@ -6,6 +6,7 @@ import com.animeproject.data.remote.response.anime.AnimeData
 import com.animeproject.data.remote.response.character.CharacterData
 import com.animeproject.domain.repository.AnimeRepository
 import com.animeproject.domain.repository.CharacterRepository
+import com.animeproject.ui.screen.util.ViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.collections.immutable.PersistentList
 import kotlinx.collections.immutable.persistentListOf
@@ -24,15 +25,20 @@ import javax.inject.Inject
 data class SearchViewState(
     val query: String = "",
     val characters: PersistentList<CharacterData> = persistentListOf(),
-    val animes: PersistentList<AnimeData> = persistentListOf()
-)
+    val animes: PersistentList<AnimeData> = persistentListOf(),
+    override val loading: Boolean = false,
+    override val error: String? = null,
+) : ViewState
 
 sealed interface SearchEvent {
 
-    data class onSearchClick(val query: String) : SearchEvent
-    data class onAnimeClick(val id: Int) : SearchEvent
-    data class onCharacterClick(val id: Int) : SearchEvent
-    data class onQueryChange(val query: String) : SearchEvent
+    data class OnSearchClick(val query: String) : SearchEvent
+    data class OnAnimeClick(val id: Int) : SearchEvent
+    data class OnCharacterClick(val id: Int) : SearchEvent
+    data class OnQueryChange(val query: String) : SearchEvent
+
+    data class OnLoading(val isLoading: Boolean) : SearchEvent
+    data class OnError(val errorMessage: String?) : SearchEvent
 }
 
 sealed interface SearchAction {
@@ -58,14 +64,37 @@ class SearchViewModel @Inject constructor(
 
     fun event(searchEvent: SearchEvent) {
         when (searchEvent) {
-            is SearchEvent.onAnimeClick -> onAnimeClick(searchEvent)
-            is SearchEvent.onSearchClick -> onSearchClick(searchEvent)
-            is SearchEvent.onCharacterClick -> onCharacterClick(searchEvent)
-            is SearchEvent.onQueryChange -> onQueryChange(searchEvent)
+            is SearchEvent.OnAnimeClick -> onAnimeClick(searchEvent)
+            is SearchEvent.OnSearchClick -> onSearchClick(searchEvent)
+            is SearchEvent.OnCharacterClick -> onCharacterClick(searchEvent)
+            is SearchEvent.OnQueryChange -> onQueryChange(searchEvent)
+
+            is SearchEvent.OnError -> onError(searchEvent)
+            is SearchEvent.OnLoading -> onLoading(searchEvent)
         }
     }
 
-    private fun onQueryChange(event: SearchEvent.onQueryChange) {
+    private fun onError(event: SearchEvent.OnError) {
+        viewModelScope.launch {
+            _state.emit(
+                _state.value.copy(
+                    error = event.errorMessage
+                )
+            )
+        }
+    }
+
+    private fun onLoading(event: SearchEvent.OnLoading) {
+        viewModelScope.launch {
+            _state.emit(
+                _state.value.copy(
+                    loading = event.isLoading
+                )
+            )
+        }
+    }
+
+    private fun onQueryChange(event: SearchEvent.OnQueryChange) {
         viewModelScope.launch {
             _state.emit(
                 _state.value.copy(
@@ -75,27 +104,35 @@ class SearchViewModel @Inject constructor(
         }
     }
 
-    private fun onAnimeClick(event: SearchEvent.onAnimeClick) {
+    private fun onAnimeClick(event: SearchEvent.OnAnimeClick) {
         viewModelScope.launch {
             _action.emit(SearchAction.NavigateToAnime(event.id))
         }
     }
 
-    private fun onCharacterClick(event: SearchEvent.onCharacterClick) {
+    private fun onCharacterClick(event: SearchEvent.OnCharacterClick) {
         viewModelScope.launch {
             _action.emit(SearchAction.NavigateToCharacter(event.id))
         }
     }
 
-    private fun onSearchClick(event: SearchEvent.onSearchClick) {
+    private fun onSearchClick(event: SearchEvent.OnSearchClick) {
         viewModelScope.launch {
-            _state.emit(
-                _state.value.copy(
-                    animes = animeRepository.searchAnimes(event.query).toPersistentList(),
-                    characters = characterRepository.searchCharacters(event.query)
-                        .toPersistentList(),
+            try {
+                onLoading(SearchEvent.OnLoading(true))
+                _state.emit(
+                    _state.value.copy(
+                        animes = animeRepository.searchAnimes(event.query).toPersistentList(),
+                        characters = characterRepository.searchCharacters(event.query)
+                            .toPersistentList(),
+                    )
                 )
-            )
+                onError(SearchEvent.OnError(null))
+            } catch (throwable: Throwable) {
+                onError(SearchEvent.OnError("Loading error :c"))
+            } finally {
+                onLoading(SearchEvent.OnLoading(false))
+            }
         }
     }
 

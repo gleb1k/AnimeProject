@@ -39,6 +39,8 @@ import androidx.navigation.NavController
 import com.animeproject.R
 import com.animeproject.data.remote.response.anime.AnimeData
 import com.animeproject.data.remote.response.character.CharacterData
+import com.animeproject.ui.screen.util.ErrorCompose
+import com.animeproject.ui.screen.util.LoadingCompose
 import com.animeproject.ui.theme.custom.CustomTheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -93,7 +95,7 @@ fun Content(
             OutlinedTextField(
                 value = viewState.query,
                 onValueChange = {
-                    eventHandler.invoke(SearchEvent.onQueryChange(it))
+                    eventHandler.invoke(SearchEvent.OnQueryChange(it))
                 },
                 modifier = Modifier
                     .fillMaxWidth()
@@ -107,7 +109,7 @@ fun Content(
                 ),
                 keyboardActions = KeyboardActions(
                     onSearch = {
-                        eventHandler.invoke(SearchEvent.onSearchClick(viewState.query))
+                        eventHandler.invoke(SearchEvent.OnSearchClick(viewState.query))
                     }
                 ),
                 colors = TextFieldDefaults.colors(
@@ -120,26 +122,41 @@ fun Content(
                     unfocusedTextColor = CustomTheme.colors.controlColor
                 ),
                 label = {
-                    Text(stringResource(R.string.main_search_bar_text), style = CustomTheme.typography.caption)
+                    Text(
+                        stringResource(R.string.main_search_bar_text),
+                        style = CustomTheme.typography.caption
+                    )
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
+            LoadingCompose(viewState = viewState)
+            ErrorCompose(viewState = viewState)
         }
 
+//        item {
+//
+//        }
+
         item {
-            TextCenter(text = stringResource(R.string.animes), isVisible = viewState.animes.isNotEmpty())
+            TextCenter(
+                text = stringResource(R.string.animes),
+                isVisible = viewState.animes.isNotEmpty()
+            )
         }
         items(viewState.animes, key = { it.malId }) { animeData ->
             AnimeItem(anime = animeData, onClick = {
-                eventHandler.invoke(SearchEvent.onAnimeClick(animeData.malId))
+                eventHandler.invoke(SearchEvent.OnAnimeClick(animeData.malId))
             })
         }
         item {
-            TextCenter(text = stringResource(R.string.characters), isVisible = viewState.characters.isNotEmpty())
+            TextCenter(
+                text = stringResource(R.string.characters),
+                isVisible = viewState.characters.isNotEmpty()
+            )
         }
         items(viewState.characters, key = { it.malId }) { characterData ->
             CharacterItem(character = characterData, onClick = {
-                eventHandler.invoke(SearchEvent.onCharacterClick(characterData.malId))
+                eventHandler.invoke(SearchEvent.OnCharacterClick(characterData.malId))
             })
         }
 
@@ -191,7 +208,7 @@ private fun AnimeItem(
             modifier = Modifier
                 .height(150.dp)
                 .width(100.dp)
-                .padding(vertical =  2.dp)
+                .padding(vertical = 2.dp)
 
         )
         Column(
@@ -205,7 +222,8 @@ private fun AnimeItem(
             )
             if (anime.score != 0.0)
                 Text(
-                    text = "${stringResource(R.string.score)} ${anime.score}", color = CustomTheme.colors.primaryText,
+                    text = "${stringResource(R.string.score)} ${anime.score}",
+                    color = CustomTheme.colors.primaryText,
                     style = CustomTheme.typography.body
                 )
         }
@@ -243,7 +261,7 @@ private fun CharacterItem(
             modifier = Modifier
                 .height(150.dp)
                 .width(100.dp)
-                .padding(vertical =  2.dp)
+                .padding(vertical = 2.dp)
         )
         Column(
             modifier = Modifier

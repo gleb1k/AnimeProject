@@ -18,6 +18,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -34,6 +35,8 @@ import com.animeproject.data.remote.response.anime.AnimeData
 import com.animeproject.data.remote.response.anime.Images
 import com.animeproject.data.remote.response.anime.Jpg
 import com.animeproject.data.remote.response.anime.Trailer
+import com.animeproject.ui.screen.util.ErrorCompose
+import com.animeproject.ui.screen.util.LoadingCompose
 import com.animeproject.ui.theme.custom.CustomTheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -44,11 +47,18 @@ fun AnimeScreen(
     animeId: Int?,
     viewModel: AnimeViewModel = hiltViewModel()
 ) {
-    viewModel.loadAnime(animeId)
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Content(viewState = state)
+    if (animeId != null) {
+        LaunchedEffect(viewModel) {
+            viewModel.event(AnimeEvent.OnCreate(animeId))
+        }
+    } else {
+        //todo norm?
+        viewModel.event(AnimeEvent.OnError("There is nothing to load, id==null"))
+    }
 
+    Content(viewState = state)
 }
 
 @Composable
@@ -62,6 +72,8 @@ fun Content(
     )
     {
         item {
+            LoadingCompose(viewState = viewState)
+            ErrorCompose(viewState = viewState)
             AnimeItemWithDesc(viewState = viewState)
         }
     }

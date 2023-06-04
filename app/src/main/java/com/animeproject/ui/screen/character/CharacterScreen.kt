@@ -14,6 +14,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -21,6 +22,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.animeproject.ui.screen.util.ErrorCompose
+import com.animeproject.ui.screen.util.LoadingCompose
 import com.animeproject.ui.theme.custom.CustomTheme
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
@@ -31,9 +34,16 @@ fun CharacterScreen(
     characterId: Int?,
     viewModel: CharacterViewModel = hiltViewModel()
 ) {
-    viewModel.load(characterId)
     val state by viewModel.state.collectAsStateWithLifecycle()
 
+    if (characterId != null) {
+        LaunchedEffect(viewModel) {
+            viewModel.event(CharacterEvent.OnCreate(characterId))
+        }
+    } else {
+        //todo norm?
+        viewModel.event(CharacterEvent.OnError("There is nothing to load, id==null"))
+    }
     Content(viewState = state)
 }
 
@@ -48,6 +58,8 @@ fun Content(
     )
     {
         item {
+            LoadingCompose(viewState = viewState)
+            ErrorCompose(viewState = viewState)
             CharacterItemWithDesc(viewState = viewState)
         }
     }
