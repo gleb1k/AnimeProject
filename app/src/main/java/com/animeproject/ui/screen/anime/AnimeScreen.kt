@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalGlideComposeApi::class)
+
 package com.animeproject.ui.screen.anime
 
 import androidx.compose.foundation.background
@@ -10,6 +12,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Divider
@@ -18,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -45,144 +49,145 @@ fun AnimeScreen(
 
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Content(
     viewState: AnimeViewState,
 ) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(CustomTheme.colors.primaryBackground),
+    )
+    {
+        item {
+            AnimeItemWithDesc(viewState = viewState)
+        }
+    }
+}
+
+@Composable
+fun AnimeItemWithDesc(viewState: AnimeViewState) {
     if (viewState.anime != null) {
-        LazyColumn(
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .fillMaxSize()
-                .background(CustomTheme.colors.primaryBackground),
-        )
-        {
-            item {
+                .fillMaxSize(),
+        ) {
+            GlideImage(
+                model = viewState.anime.images.jpg?.largeImageUrl
+                    ?: viewState.anime.images.webp?.largeImageUrl,
+                contentDescription = "Image",
+                contentScale = ContentScale.None,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+                    .height(320.dp)
+                    .width(180.dp)
+                    .clip(RoundedCornerShape(2.dp))
+            )
+            Card(
+                elevation = CardDefaults.cardElevation(4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp),
+
+                ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.secondaryBackground),
+                        .background(CustomTheme.colors.secondaryBackground)
+                        .padding(vertical = 8.dp)
+
                 ) {
-                    GlideImage(
-                        model = viewState.anime.images.jpg?.largeImageUrl
-                            ?: viewState.anime.images.webp?.largeImageUrl,
-                        contentDescription = "Image",
-                        contentScale = ContentScale.None,
+                    Text(
+                        text = viewState.anime.titleEnglish ?: "",
+                        color = CustomTheme.colors.primaryText,
+                        style = CustomTheme.typography.body,
                         modifier = Modifier
-                            .padding(top = 16.dp)
-//                            .fillMaxWidth()
-                            .height(320.dp)
-                            .width(180.dp)
+                            .padding(horizontal = 8.dp)
                     )
-                    Card(
-                        elevation = CardDefaults.cardElevation(4.dp),
+                    Text(
+                        text = viewState.anime.title,
+                        color = CustomTheme.colors.primaryText,
+                        style = CustomTheme.typography.body,
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp),
-
-                        ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(CustomTheme.colors.secondaryBackground)
-                                .padding(vertical = 8.dp)
-
-                        ) {
-                            Text(
-                                text = viewState.anime.titleEnglish ?: "",
-                                color = CustomTheme.colors.primaryText,
-                                style = CustomTheme.typography.body,
-                                modifier = Modifier
-                                    .padding(horizontal = 8.dp)
-                            )
-                            Text(
-                                text = viewState.anime.title,
-                                color = CustomTheme.colors.primaryText,
-                                style = CustomTheme.typography.body,
-                                modifier = Modifier
-                                    .padding(horizontal = 8.dp)
-                                    .padding(bottom = 8.dp)
-                            )
-                            Row(
-                                verticalAlignment = Alignment.CenterVertically,
-                                modifier = Modifier
-                                    .padding(bottom = 16.dp)
-                            ) {
-                                Text(
-                                    text = "${viewState.anime.year} y.",
-                                    color = CustomTheme.colors.primaryText,
-                                    style = CustomTheme.typography.body,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp),
-                                )
-                                Text(
-                                    text = viewState.anime.type ?: "",
-                                    color = CustomTheme.colors.primaryText,
-                                    style = CustomTheme.typography.body,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp),
-                                )
-                                Text(
-                                    text = viewState.anime.score.toString(),
-                                    color = CustomTheme.colors.primaryText,
-                                    style = CustomTheme.typography.body,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp),
-                                )
-                            }
-
-                            InfoDivider()
-                            InfoText(title = "Rating", text = viewState.anime.rating)
-                            InfoDivider()
-                            InfoText(title = "Status", text = viewState.anime.status)
-                            InfoDivider()
-                            InfoText(
-                                title = "Episodes",
-                                text = viewState.anime.episodes.toString()
-                            )
-                            InfoDivider()
-                            InfoText(title = "Source", text = viewState.anime.source)
-                            InfoDivider()
-                            InfoText(
-                                title = "Aired",
-                                text = viewState.anime.aired.string ?: ""
-                            )
-                            InfoDivider()
-
-                        }
-                    }
-
-                }
-                Card(
-                    elevation = CardDefaults.cardElevation(4.dp),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                ) {
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
+                            .padding(horizontal = 8.dp)
+                            .padding(bottom = 8.dp)
+                    )
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier
-                            .fillMaxSize()
-                            .background(CustomTheme.colors.secondaryBackground)
-                            .padding(vertical = 8.dp)
+                            .padding(bottom = 16.dp)
                     ) {
                         Text(
-                            text = viewState.anime.synopsis,
+                            text = "${viewState.anime.year} y.",
                             color = CustomTheme.colors.primaryText,
                             style = CustomTheme.typography.body,
                             modifier = Modifier
-                                .padding(horizontal = 8.dp)
+                                .padding(horizontal = 8.dp),
+                        )
+                        Text(
+                            text = viewState.anime.type ?: "",
+                            color = CustomTheme.colors.primaryText,
+                            style = CustomTheme.typography.body,
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp),
+                        )
+                        Text(
+                            text = viewState.anime.score.toString(),
+                            color = CustomTheme.colors.primaryText,
+                            style = CustomTheme.typography.body,
+                            modifier = Modifier
+                                .padding(horizontal = 8.dp),
                         )
                     }
+
+                    InfoDivider()
+                    InfoText(title = "Rating", text = viewState.anime.rating)
+                    InfoDivider()
+                    InfoText(title = "Status", text = viewState.anime.status)
+                    InfoDivider()
+                    InfoText(
+                        title = "Episodes",
+                        text = viewState.anime.episodes.toString()
+                    )
+                    InfoDivider()
+                    InfoText(title = "Source", text = viewState.anime.source)
+                    InfoDivider()
+                    InfoText(
+                        title = "Aired",
+                        text = viewState.anime.aired.string ?: ""
+                    )
+                    InfoDivider()
+
                 }
             }
-        }
 
+        }
+        Card(
+            elevation = CardDefaults.cardElevation(4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
+        ) {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(CustomTheme.colors.secondaryBackground)
+                    .padding(vertical = 8.dp)
+            ) {
+                Text(
+                    text = viewState.anime.synopsis,
+                    color = CustomTheme.colors.primaryText,
+                    style = CustomTheme.typography.body,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                )
+            }
+        }
     }
 }
-
 
 @Composable
 private fun InfoText(title: String, text: String) {

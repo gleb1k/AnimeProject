@@ -60,6 +60,18 @@ fun CustomTheme(
             },
             fontWeight = FontWeight.Bold
         ),
+        large = TextStyle(
+            fontFamily = when (fontFamilies) {
+                FontFamilies.Normal -> FontFamily.Monospace
+                FontFamilies.Cursive -> FontFamily.Cursive
+            },
+            fontSize = when (textSize) {
+                CustomSize.Small -> 20.sp
+                CustomSize.Medium -> 22.sp
+                CustomSize.Big -> 24.sp
+            },
+            fontWeight = FontWeight.Bold
+        ),
         body = TextStyle(
             fontFamily = when (fontFamilies) {
                 FontFamilies.Normal -> FontFamily.SansSerif

@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalGlideComposeApi::class)
+
 package com.animeproject.ui.screen.character
 
 import androidx.compose.foundation.background
@@ -35,96 +37,99 @@ fun CharacterScreen(
     Content(viewState = state)
 }
 
-@OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun Content(
     viewState: CharacterViewState,
 ) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(CustomTheme.colors.primaryBackground),
+    )
+    {
+        item {
+            CharacterItemWithDesc(viewState = viewState)
+        }
+    }
+}
+
+@Composable
+fun CharacterItemWithDesc(viewState: CharacterViewState) {
     if (viewState.character != null) {
-        LazyColumn(
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
                 .fillMaxSize()
                 .background(CustomTheme.colors.primaryBackground),
-        )
-        {
-            item {
+        ) {
+            GlideImage(
+                model = viewState.character.images.jpg?.imageUrl
+                    ?: viewState.character.images.webp?.imageUrl,
+                contentDescription = "Image",
+                contentScale = ContentScale.None,
+                modifier = Modifier
+                    .padding(top = 16.dp)
+//                            .fillMaxWidth()
+                    .height(320.dp)
+                    .width(180.dp)
+            )
+            Card(
+                elevation = CardDefaults.cardElevation(4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp)
+                    .background(CustomTheme.colors.secondaryBackground),
+            ) {
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier
                         .fillMaxSize()
-                        .background(CustomTheme.colors.primaryBackground),
+                        .background(CustomTheme.colors.secondaryBackground)
+                        .padding(vertical = 8.dp)
                 ) {
-                    GlideImage(
-                        model = viewState.character.images.jpg?.imageUrl
-                            ?: viewState.character.images.webp?.imageUrl,
-                        contentDescription = "Image",
-                        contentScale = ContentScale.None,
+                    Text(
+                        text = viewState.character.name,
+                        color = CustomTheme.colors.primaryText,
+                        style = CustomTheme.typography.heading,
                         modifier = Modifier
-                            .padding(top = 16.dp)
-//                            .fillMaxWidth()
-                            .height(320.dp)
-                            .width(180.dp)
-                    )
-                    Card(
-                        elevation = CardDefaults.cardElevation(4.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
-                            .background(CustomTheme.colors.secondaryBackground),
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
-                            modifier = Modifier
-                                .fillMaxSize()
-                                .background(CustomTheme.colors.secondaryBackground)
-                                .padding(vertical = 8.dp)
-                        ) {
-                            Text(
-                                text = viewState.character.name,
-                                color = CustomTheme.colors.primaryText,
-                                style = CustomTheme.typography.heading,
-                                modifier = Modifier
-                                    .padding(horizontal = 8.dp)
-                            )
-                            if (viewState.character.nicknames.isNotEmpty()) {
-                                Text(
-                                    text = viewState.character.nicknames[0] ?: "",
-                                    color = CustomTheme.colors.primaryText,
-                                    style = CustomTheme.typography.body,
-                                    modifier = Modifier
-                                        .padding(horizontal = 8.dp)
-                                        .padding(bottom = 8.dp)
-                                )
-                            }
-                        }
-
-                    }
-                    Card(
-                        elevation = CardDefaults.cardElevation(4.dp),
-                        modifier = Modifier
-                            .fillMaxWidth()
                             .padding(horizontal = 8.dp)
-                            .background(CustomTheme.colors.secondaryBackground),
-                    ) {
-                        Column(
-                            horizontalAlignment = Alignment.CenterHorizontally,
+                    )
+                    if (viewState.character.nicknames.isNotEmpty()) {
+                        Text(
+                            text = viewState.character.nicknames[0] ?: "",
+                            color = CustomTheme.colors.primaryText,
+                            style = CustomTheme.typography.body,
                             modifier = Modifier
-                                .fillMaxSize()
-                                .background(CustomTheme.colors.secondaryBackground)
-                                .padding(vertical = 8.dp)
-                        ) {
-                            Text(
-                                text = viewState.character.about ?: "",
-                                color = CustomTheme.colors.primaryText,
-                                style = CustomTheme.typography.body,
-                                modifier = Modifier
-                                    .padding(horizontal = 8.dp)
-                            )
-                        }
+                                .padding(horizontal = 8.dp)
+                                .padding(bottom = 8.dp)
+                        )
                     }
                 }
-            }
 
+            }
+            Card(
+                elevation = CardDefaults.cardElevation(4.dp),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .background(CustomTheme.colors.secondaryBackground),
+            ) {
+                Column(
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(CustomTheme.colors.secondaryBackground)
+                        .padding(vertical = 8.dp)
+                ) {
+                    Text(
+                        text = viewState.character.about ?: "",
+                        color = CustomTheme.colors.primaryText,
+                        style = CustomTheme.typography.body,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                    )
+                }
+            }
         }
     }
 }

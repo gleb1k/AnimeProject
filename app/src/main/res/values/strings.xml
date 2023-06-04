@@ -6,5 +6,12 @@
     <string name="character">Character</string>
     <string name="search">Search</string>
     <string name="base">Base</string>
+    <string name="rating">Rating</string>
+    <string name="status">Status</string>
+    <string name="episodes">Episodes</string>
+    <string name="sourse">Sourse</string>
+    <string name="aired">Aired</string>
+    <string name="animes">Animes</string>
+    <string name="characters">Characters</string>
 
 </resources>

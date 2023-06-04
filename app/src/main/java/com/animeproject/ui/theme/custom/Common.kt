@@ -19,6 +19,7 @@ data class CustomColors(
 
 data class CustomTypography(
     val heading: TextStyle,
+    val large: TextStyle,
     val body: TextStyle,
     val toolbar: TextStyle,
     val caption: TextStyle

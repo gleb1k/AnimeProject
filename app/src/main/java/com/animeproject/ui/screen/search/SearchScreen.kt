@@ -115,7 +115,8 @@ fun Content(
                     unfocusedContainerColor = CustomTheme.colors.secondaryBackground,
                     disabledContainerColor = CustomTheme.colors.secondaryBackground,
                     focusedIndicatorColor = CustomTheme.colors.tintColor,
-                    unfocusedLabelColor = CustomTheme.colors.controlColor
+                    unfocusedLabelColor = CustomTheme.colors.controlColor,
+                    unfocusedTextColor = CustomTheme.colors.controlColor
                 ),
                 label = {
                     Text("Anime title or character name", style = CustomTheme.typography.caption)
@@ -153,13 +154,13 @@ private fun TextCenter(
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             modifier = Modifier
-                .padding(horizontal = 8.dp)
+                .padding(horizontal = 8.dp, vertical = 4.dp)
                 .fillMaxWidth()
         ) {
             Text(
                 text = text,
                 color = CustomTheme.colors.primaryText,
-                style = CustomTheme.typography.heading,
+                style = CustomTheme.typography.large,
             )
         }
     }
@@ -189,6 +190,7 @@ private fun AnimeItem(
             modifier = Modifier
                 .height(150.dp)
                 .width(100.dp)
+                .padding(vertical =  2.dp)
 
         )
         Column(
@@ -240,6 +242,7 @@ private fun CharacterItem(
             modifier = Modifier
                 .height(150.dp)
                 .width(100.dp)
+                .padding(vertical =  2.dp)
         )
         Column(
             modifier = Modifier
