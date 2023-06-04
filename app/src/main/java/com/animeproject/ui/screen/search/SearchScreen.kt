@@ -28,6 +28,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
@@ -35,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
+import com.animeproject.R
 import com.animeproject.data.remote.response.anime.AnimeData
 import com.animeproject.data.remote.response.character.CharacterData
 import com.animeproject.ui.theme.custom.CustomTheme
@@ -76,7 +78,6 @@ fun SearchScreen(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Content(
     viewState: SearchViewState,
@@ -119,14 +120,14 @@ fun Content(
                     unfocusedTextColor = CustomTheme.colors.controlColor
                 ),
                 label = {
-                    Text("Anime title or character name", style = CustomTheme.typography.caption)
+                    Text(stringResource(R.string.main_search_bar_text), style = CustomTheme.typography.caption)
                 }
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
 
         item {
-            TextCenter(text = "Animes", isVisible = viewState.animes.isNotEmpty())
+            TextCenter(text = stringResource(R.string.animes), isVisible = viewState.animes.isNotEmpty())
         }
         items(viewState.animes, key = { it.malId }) { animeData ->
             AnimeItem(anime = animeData, onClick = {
@@ -134,7 +135,7 @@ fun Content(
             })
         }
         item {
-            TextCenter(text = "Characters", isVisible = viewState.characters.isNotEmpty())
+            TextCenter(text = stringResource(R.string.characters), isVisible = viewState.characters.isNotEmpty())
         }
         items(viewState.characters, key = { it.malId }) { characterData ->
             CharacterItem(character = characterData, onClick = {
@@ -204,7 +205,7 @@ private fun AnimeItem(
             )
             if (anime.score != 0.0)
                 Text(
-                    text = "Score: ${anime.score}", color = CustomTheme.colors.primaryText,
+                    text = "${stringResource(R.string.score)} ${anime.score}", color = CustomTheme.colors.primaryText,
                     style = CustomTheme.typography.body
                 )
         }

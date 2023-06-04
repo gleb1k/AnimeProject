@@ -23,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.animeproject.R
 import com.animeproject.data.remote.response.anime.Aired
 import com.animeproject.data.remote.response.anime.AnimeData
 import com.animeproject.data.remote.response.anime.Images
@@ -143,19 +145,19 @@ fun AnimeItemWithDesc(viewState: AnimeViewState) {
                     }
 
                     InfoDivider()
-                    InfoText(title = "Rating", text = viewState.anime.rating)
+                    InfoText(title = stringResource(R.string.rating), text = viewState.anime.rating)
                     InfoDivider()
-                    InfoText(title = "Status", text = viewState.anime.status)
+                    InfoText(title = stringResource(R.string.status), text = viewState.anime.status)
                     InfoDivider()
                     InfoText(
-                        title = "Episodes",
+                        title = stringResource(R.string.episodes),
                         text = viewState.anime.episodes.toString()
                     )
                     InfoDivider()
-                    InfoText(title = "Source", text = viewState.anime.source)
+                    InfoText(title = stringResource(R.string.sourse), text = viewState.anime.source)
                     InfoDivider()
                     InfoText(
-                        title = "Aired",
+                        title = stringResource(R.string.aired),
                         text = viewState.anime.aired.string ?: ""
                     )
                     InfoDivider()

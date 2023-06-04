@@ -13,5 +13,7 @@
     <string name="aired">Aired</string>
     <string name="animes">Animes</string>
     <string name="characters">Characters</string>
+    <string name="main_search_bar_text">Anime tittle or character name</string>
+    <string name="score">Score:</string>
 
 </resources>
